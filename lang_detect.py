@@ -9,13 +9,11 @@ class Detector:
 		"""
 		self.dictionary = dict() #TODO: read file and parse into dictionary
 
-		#Create dictionary of words with value 0
+		# Create dictionary of words with value 0
 
 		for line in reversed(open(dict_path).readlines()):
-			if '%' in line:
-				break
-			else:
-				self.dictionary[line] = 0
+			if not line.startswith("%"):
+				self.dictionary[line] = 1 # this is the first time we've seen this word
 
 
 	def detect(self, text):
@@ -28,6 +26,7 @@ class Detector:
 		wordset = re.findall(r"[\w']+", text)
 		for word in wordset:
 			if word in self.dictionary: # need to check case on the dictionary elements too
+				self.dictionary[word] += 1 # let's count common words
 				score += 1
 		# return percentage score
 		return float(score)/len(wordset)
@@ -51,25 +50,26 @@ class TestDetector(unittest.TestCase):
 		# do nothing yet
 		pass
 
-	def test_(self):
+	def test_demo(self):
 		"""
 		A test test, will build this up further when dictionary files can be read
 		"""
 		self.assertTrue(1==1)
 
-	def readTest(self):
+	def test_create_detector(self):
 		"""
 		A test to test reading of dictionary (Spanish)
 		"""
-
-		SpanishDet = Detector('ES.dic')
+		dict_path = 'de_neu.dic'
+		SpanishDet = Detector(dict_path)
 		Count = 0
 		for line in open(dict_path).readlines():
-			Count+=1
+			if not line.startswith("%"):
+				Count+=1
 		self.assertTrue(Count == SpanishDet.dictLength())
 
 if __name__ == '__main__':
 	"""
 	Incase this gets used elsewhere, then we don't want to run tests
 	"""
-	#unittest.main()
+	unittest.main()

@@ -9,7 +9,7 @@ class Detector:
 		"""
 		self.dictionary = dict() #TODO: read file and parse into dictionary
 
-		#Create dictionary of words with array being language that word can originate from
+		#Create dictionary of words with value being an array being language that word can originate from
 		#EG {'Hello': [German, English]}
 
 	def detect(self, text):

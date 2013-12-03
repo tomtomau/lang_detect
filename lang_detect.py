@@ -29,8 +29,15 @@ class Detector:
 		for word in wordset:
 			if word in self.dictionary: # need to check case on the dictionary elements too
 				score += 1
+				self.dictionary[word]+=1
 		# return percentage score
 		return float(score)/len(wordset)
+	def resetWordCount(self, word):
+		if word in self.dicionary:
+			self.dictionary[word] = 0
+	def resetAllWordCounts(self):
+		for keys in self.dictionary:
+			self.dictionary[keys] = 0
 
 
 		# return percentage score

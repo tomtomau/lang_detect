@@ -3,18 +3,20 @@ import unittest
 import sys, re
 
 class Detector:
-	def __init__(self, dict_path):
+	def __init__(self, language, dict_path):
 		"""
 		Constructor for detector object, takes in path to dictionary as argument
 		"""
+		self.language = language
 		self.dictionary = dict() #TODO: read file and parse into dictionary
 
 		# Create dictionary of words with value 0
-
-		for line in reversed(open(dict_path).readlines()):
-			if not line.startswith("%"):
-				self.dictionary[line] = 1 # this is the first time we've seen this word
-
+		for line in open(dict_path).readlines():
+			if not "%" in line:
+				key = line.lower().strip() # lower case and remove \n
+				if not key in self.dictionary:
+					self.dictionary[key] = 0 # this is the first time we've seen this word
+		
 
 	def detect(self, text):
 		"""
@@ -25,10 +27,11 @@ class Detector:
 		score = 0
 		wordset = re.findall(r"[\w']+", text)
 		for word in wordset:
-			if word in self.dictionary: # need to check case on the dictionary elements too
-				self.dictionary[word] += 1 # let's count common words
+			lower_word = word.lower()
+			if lower_word in self.dictionary: # need to check case on the dictionary elements too
+				self.dictionary[lower_word] += 1 # let's count common words
 				score += 1
-				self.dictionary[word]+=1
+				self.dictionary[lower_word]+=1
 		# return percentage score
 		return float(score)/len(wordset)
 
@@ -75,16 +78,25 @@ class TestDetector(unittest.TestCase):
 		"""
 		A test to test reading of dictionary (Spanish)
 		"""
-		dict_path = 'de_neu.dic'
-		SpanishDet = Detector(dict_path)
-		Count = 0
-		for line in open(dict_path).readlines():
-			if not line.startswith("%"):
-				Count+=1
-		self.assertTrue(Count == SpanishDet.dictLength())
+		dict_path = 'tests/test_construction.dic'
+		language_name = "Hitchhiker"
+		hitchhiker = Detector(language_name, dict_path)
+		
+		self.assertTrue(hitchhiker.dictLength() == 8)
+		self.assertTrue(hitchhiker.language == language_name)
 
 if __name__ == '__main__':
 	"""
 	Incase this gets used elsewhere, then we don't want to run tests
 	"""
+	test_text = open("tests/test_text.txt").read()
+	languages = [["German", "de_neu.dic"], ["English", "eng_com.dic"]]
+	detectors = list()
+	for language in languages:
+		detectors.append(Detector(language[0], language[1]))
+
+	for detector in detectors:
+		print detector.language + ", " + str(detector.detect(test_text))
+
+	# And run the tests
 	unittest.main()

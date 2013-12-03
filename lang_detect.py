@@ -28,8 +28,23 @@ class Detector:
 			if word in self.dictionary: # need to check case on the dictionary elements too
 				self.dictionary[word] += 1 # let's count common words
 				score += 1
+				self.dictionary[word]+=1
 		# return percentage score
 		return float(score)/len(wordset)
+
+	def resetWordCount(self, word):
+		"""
+		Reset occurence count of certain word in detector dictionary
+		"""
+		if word in self.dicionary:
+			self.dictionary[word] = 0
+
+	def resetAllWordCounts(self):
+		"""
+		Reset occurence counts of all words in detector dictionary
+		"""
+		for keys in self.dictionary:
+			self.dictionary[keys] = 0
 
 
 		# return percentage score

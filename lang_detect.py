@@ -32,10 +32,18 @@ class Detector:
 				self.dictionary[word]+=1
 		# return percentage score
 		return float(score)/len(wordset)
+
 	def resetWordCount(self, word):
+		"""
+		Reset occurence count of certain word in detector dictionary
+		"""
 		if word in self.dicionary:
 			self.dictionary[word] = 0
+
 	def resetAllWordCounts(self):
+		"""
+		Reset occurence counts of all words in detector dictionary
+		"""
 		for keys in self.dictionary:
 			self.dictionary[keys] = 0
 

@@ -1,4 +1,6 @@
 # Language detection
+import unittest
+import sys
 
 class Detector:
 	def __init__(self, dict_path):
@@ -17,3 +19,23 @@ class Detector:
 				# increase score
 
 		# return percentage score
+
+class TestDetector(unittest.TestCase):
+	"""
+	Unit testing object
+	"""
+	def setUp(self):
+		# do nothing yet
+		pass
+
+	def test_(self):
+		"""
+		A test test, will build this up further when dictionary files can be read
+		"""
+		self.assertTrue(1==1)
+
+if __name__ == '__main__':
+	"""
+	Incase this gets used elsewhere, then we don't want to run tests
+	"""
+	unittest.main()

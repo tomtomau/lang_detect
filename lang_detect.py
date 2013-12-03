@@ -9,8 +9,14 @@ class Detector:
 		"""
 		self.dictionary = dict() #TODO: read file and parse into dictionary
 
-		#Create dictionary of words with value being an array being language that word can originate from
-		#EG {'Hello': [German, English]}
+		#Create dictionary of words with value 0
+
+		for line in reversed(open(dict_path).readlines()):
+			if '%' in line:
+				break
+			else:
+				self.dictionary[line] = 0
+
 
 	def detect(self, text):
 		"""
@@ -22,6 +28,11 @@ class Detector:
 				# increase score
 
 		# return percentage score
+	def dictLength(self):
+		"""
+		Returns length of dictionary
+		"""
+		return len(self.dictionary)
 
 class TestDetector(unittest.TestCase):
 	"""
@@ -36,6 +47,17 @@ class TestDetector(unittest.TestCase):
 		A test test, will build this up further when dictionary files can be read
 		"""
 		self.assertTrue(1==1)
+
+	def readTest(self):
+		"""
+		A test to test reading of dictionary (Spanish)
+		"""
+
+		SpanishDet = Detector('ES.dic')
+		Count = 0
+		for line in open(dict_path).readlines():
+			Count+=1
+		self.assertTrue(Count == SpanishDet.dictLength())
 
 if __name__ == '__main__':
 	"""

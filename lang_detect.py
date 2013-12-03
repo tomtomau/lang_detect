@@ -1,6 +1,6 @@
 # Language detection
 import unittest
-import sys
+import sys, re
 
 class Detector:
 	def __init__(self, dict_path):
@@ -13,12 +13,15 @@ class Detector:
 		"""
 		Parse a text segment and respond with match percentage
 		"""
+		if text == "":
+			raise BaseException("Text must be at least one letter long")
 		score = 0
-		# for each word
-			# if word in dictionary
-				# increase score
+		wordset = re.findall(r"[\w']+", text)
+		for word in wordset:
+			if word in self.dictionary: # need to check case on the dictionary elements too
+				score += 1
 
-		# return percentage score
+		return float(score)/len(wordset)
 
 class TestDetector(unittest.TestCase):
 	"""
@@ -38,4 +41,4 @@ if __name__ == '__main__':
 	"""
 	Incase this gets used elsewhere, then we don't want to run tests
 	"""
-	unittest.main()
+	#unittest.main()
